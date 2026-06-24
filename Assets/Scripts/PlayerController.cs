@@ -5,26 +5,71 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private Rigidbody rb;
+    public GameObject mapUI;
+    
+    public InputActionReference moveAction;
+    public InputActionReference interactAction;
+    public InputActionReference mapAction;
 
-    void Start()
+    private Rigidbody rb;
+    private Vector2 moveInput;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    void OnEnable()
+    {
+        moveAction.action.Enable();
+        interactAction.action.Enable();
+        mapAction.action.Enable();
+        
+        interactAction.action.performed += OnInteract;
+        mapAction.action.performed += OnToggleMap;
+    }
+
+    void OnDisable()
+    {
+        moveAction.action.Disable();
+        interactAction.action.Disable();
+        mapAction.action.Disable();
+        
+        interactAction.action.performed -= OnInteract;
+        mapAction.action.performed -= OnToggleMap;
+    }
+
+    void Update()
+    {
+        moveInput = moveAction.action.ReadValue<Vector2>();
+    }
+
     void FixedUpdate()
     {
-        bool isMovingForward = Keyboard.current != null && (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed);
+        Vector3 moveDirection = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
+        Vector3 velocity = moveDirection * moveSpeed;
+        velocity.y = rb.linearVelocity.y;
+        rb.linearVelocity = velocity;
+    }
 
-        if (isMovingForward)
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 2f);
+        foreach (Collider col in colliders)
         {
-            Vector3 forwardMove = transform.forward * moveSpeed;
-            forwardMove.y = rb.linearVelocity.y;
-            rb.linearVelocity = forwardMove;
+            OpenableBehaviour openable = col.GetComponent<OpenableBehaviour>();
+            if (openable != null)
+            {
+                
+            }
         }
-        else
+    }
+
+    private void OnToggleMap(InputAction.CallbackContext context)
+    {
+        if (mapUI != null)
         {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            mapUI.SetActive(!mapUI.activeSelf);
         }
     }
 }
