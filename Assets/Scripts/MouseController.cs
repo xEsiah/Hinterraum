@@ -9,13 +9,15 @@ public class MouseController : MonoBehaviour
     public float maxLookAngle = 20f;
 
     private float xRotation = 0f;
+    private Quaternion initialRotation;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        initialRotation = transform.localRotation;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (Mouse.current == null) return;
 
@@ -26,7 +28,7 @@ public class MouseController : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, minLookAngle, maxLookAngle);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.localRotation = initialRotation * Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }

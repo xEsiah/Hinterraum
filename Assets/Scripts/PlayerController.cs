@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
@@ -13,11 +14,13 @@ public class PlayerController : MonoBehaviour
     public InputActionReference mapAction;
 
     private Rigidbody rb;
+    private Animator animator;
     private Vector2 moveInput;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -44,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = moveAction.action.ReadValue<Vector2>();
         CheckInteractables();
+        UpdateAnimations();
     }
 
     void FixedUpdate()
@@ -53,6 +57,12 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = moveDirection * currentSpeed;
         velocity.y = rb.linearVelocity.y;
         rb.linearVelocity = velocity;
+    }
+
+    private void UpdateAnimations()
+    {
+        bool isMoving = moveInput.magnitude > 0.1f;
+        animator.SetBool("IsRunning", isMoving);
     }
 
     private void CheckInteractables()
@@ -107,5 +117,11 @@ public class PlayerController : MonoBehaviour
     private void OnToggleMap(InputAction.CallbackContext context)
     {
         if (mapUI != null) mapUI.SetActive(!mapUI.activeSelf);
+    }
+
+    public void TriggerNoClipFall()
+    {
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
     }
 }

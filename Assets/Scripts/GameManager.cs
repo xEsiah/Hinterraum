@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private Coroutine timerCoroutine;
     public float playthroughDuration = 105f;
     private bool isShowingPickup = false;
+    public float fallDuration = 5f;
 
     void Awake()
     {
@@ -56,13 +57,16 @@ public class GameManager : MonoBehaviour
     {
         Collider playerCollider = playerReference.GetComponent<Collider>();
         Rigidbody playerRb = playerReference.GetComponent<Rigidbody>();
+        Animator playerAnimator = playerReference.GetComponent<Animator>();
+        PlayerController playerController = playerReference.GetComponent<PlayerController>();
 
-        if (playerCollider != null) playerCollider.enabled = false;
+        if (playerController != null) playerController.enabled = false;
+        if (playerAnimator != null) playerAnimator.SetBool("NoClip", true);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(fallDuration);
 
-        playerReference.transform.position = new Vector3(2f, 0.15f, 0f);
-
+        playerReference.transform.position = new Vector3(2f, 0.1f, 0f);
+        
         if (playerRb != null)
         {
             playerRb.linearVelocity = Vector3.zero;
@@ -70,6 +74,15 @@ public class GameManager : MonoBehaviour
         }
 
         if (playerCollider != null) playerCollider.enabled = true;
+        if (playerAnimator != null) 
+        {
+            playerAnimator.SetBool("NoClip", false);
+            playerAnimator.SetTrigger("GetUp");
+        }
+
+        yield return new WaitForSeconds(2.5f);
+
+        if (playerController != null) playerController.enabled = true;
 
         RegisterDeath();
     }
