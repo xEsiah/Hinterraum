@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
     public GameObject playerReference;
+    public TextMeshProUGUI itemTextUI;
     
     public bool hasKeyChest;
     public bool hasKeyDoor;
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnDeathCountChanged;
 
     private Coroutine timerCoroutine;
+    private bool isShowingPickup = false;
 
     void Awake()
     {
@@ -36,10 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void StartLayoutTimer()
     {
-        if (timerCoroutine != null)
-        {
-            StopCoroutine(timerCoroutine);
-        }
+        if (timerCoroutine != null) StopCoroutine(timerCoroutine);
         timerCoroutine = StartCoroutine(LayoutTimerRoutine());
     }
 
@@ -59,10 +59,7 @@ public class GameManager : MonoBehaviour
         Collider playerCollider = playerReference.GetComponent<Collider>();
         Rigidbody playerRb = playerReference.GetComponent<Rigidbody>();
 
-        if (playerCollider != null)
-        {
-            playerCollider.enabled = false;
-        }
+        if (playerCollider != null) playerCollider.enabled = false;
 
         yield return new WaitForSeconds(3f);
 
@@ -74,10 +71,7 @@ public class GameManager : MonoBehaviour
             playerRb.angularVelocity = Vector3.zero;
         }
 
-        if (playerCollider != null)
-        {
-            playerCollider.enabled = true;
-        }
+        if (playerCollider != null) playerCollider.enabled = true;
 
         RegisterDeath();
     }
@@ -87,11 +81,42 @@ public class GameManager : MonoBehaviour
         deathCount++;
         OnDeathCountChanged?.Invoke(deathCount);
 
-        if (LayoutManager.instance != null)
-        {
-            LayoutManager.instance.ChangeLayoutRandomly();
-        }
+        if (LayoutManager.instance != null) LayoutManager.instance.ChangeLayoutRandomly();
 
         StartLayoutTimer();
+    }
+
+    public void ShowItemUI(string itemName)
+    {
+        if (itemTextUI != null)
+        {
+            itemTextUI.text = itemName;
+            isShowingPickup = true;
+            StopCoroutine("ClearUIRoutine");
+            StartCoroutine("ClearUIRoutine");
+        }
+    }
+
+    private IEnumerator ClearUIRoutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        isShowingPickup = false;
+        if (itemTextUI != null) itemTextUI.text = "";
+    }
+
+    public void ShowInteractPrompt(string message)
+    {
+        if (itemTextUI != null && !isShowingPickup)
+        {
+            itemTextUI.text = message;
+        }
+    }
+
+    public void HideInteractPrompt()
+    {
+        if (itemTextUI != null && !isShowingPickup)
+        {
+            itemTextUI.text = "";
+        }
     }
 }

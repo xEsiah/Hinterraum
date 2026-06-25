@@ -8,13 +8,15 @@ public class OpenableBehaviour : MonoBehaviour
 
     private bool isOpened = false;
 
-    private void OnCollisionEnter(Collision collision)
+    public void TryOpen()
     {
-        if (isOpened || !collision.gameObject.CompareTag("Player")) return;
+        if (isOpened) return;
 
         if (structureType == StructureType.Chest && GameManager.instance.hasKeyChest)
         {
             GameManager.instance.hasKeyChest = false;
+            GameManager.instance.ShowItemUI("Chest unlocked !"); 
+            
             if (contentPrefab != null)
             {
                 Instantiate(contentPrefab, transform.position, transform.rotation);
@@ -24,6 +26,8 @@ public class OpenableBehaviour : MonoBehaviour
         else if (structureType == StructureType.Door && GameManager.instance.hasKeyDoor)
         {
             GameManager.instance.hasKeyDoor = false;
+            GameManager.instance.ShowItemUI("Door unlocked !"); 
+            
             OpenStructure();
         }
     }

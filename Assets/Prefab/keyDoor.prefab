@@ -60,7 +60,7 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 8714642262177594810}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fe5bf4624ba821cf6996ee6e0c6c19d9, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 1274230984812184325}
   m_SourcePrefab: {fileID: 100100000, guid: fe5bf4624ba821cf6996ee6e0c6c19d9, type: 3}
 --- !u!1 &3048178610090229197 stripped
@@ -96,7 +96,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

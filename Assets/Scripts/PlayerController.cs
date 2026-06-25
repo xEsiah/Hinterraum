@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public GameObject mapUI;
+    public float interactRange = 3f;
     
     public InputActionReference moveAction;
     public InputActionReference interactAction;
@@ -42,34 +43,64 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         moveInput = moveAction.action.ReadValue<Vector2>();
+        CheckInteractables();
     }
 
     void FixedUpdate()
     {
+        float currentSpeed = mapUI != null && mapUI.activeSelf ? moveSpeed * 0.5f : moveSpeed;
         Vector3 moveDirection = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
-        Vector3 velocity = moveDirection * moveSpeed;
+        Vector3 velocity = moveDirection * currentSpeed;
         velocity.y = rb.linearVelocity.y;
         rb.linearVelocity = velocity;
     }
 
-    private void OnInteract(InputAction.CallbackContext context)
+    private void CheckInteractables()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 2f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange, Physics.AllLayers, QueryTriggerInteraction.Collide);
+        bool canInteract = false;
+
         foreach (Collider col in colliders)
         {
-            OpenableBehaviour openable = col.GetComponent<OpenableBehaviour>();
+            if (col.GetComponent<KeyPickup>() != null || col.GetComponent<OpenableBehaviour>() != null)
+            {
+                GameManager.instance.ShowInteractPrompt("Press E to interact");
+                canInteract = true;
+                break;
+            }
+        }
+
+        if (!canInteract)
+        {
+            GameManager.instance.HideInteractPrompt();
+        }
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange, Physics.AllLayers, QueryTriggerInteraction.Collide);
+        
+        foreach (Collider col in colliders)
+        {
+            KeyPickup key = col.GetComponentInParent<KeyPickup>();
+            if (key != null)
+            {
+                key.Pickup();
+                return; 
+            }
+
+            OpenableBehaviour openable = col.GetComponentInParent<OpenableBehaviour>();
             if (openable != null)
             {
-                
+                openable.TryOpen();
+                return;
             }
         }
     }
 
     private void OnToggleMap(InputAction.CallbackContext context)
     {
-        if (mapUI != null)
-        {
-            mapUI.SetActive(!mapUI.activeSelf);
-        }
+        if (mapUI != null) mapUI.SetActive(!mapUI.activeSelf);
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3442276647384536498}
   - component: {fileID: 6891163459794816299}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,13 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2853082352615135164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.021814892, y: 0, z: 0, w: 0.999762}
-  m_LocalPosition: {x: 0, y: 1.664, z: -0.15}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.175, z: 0.0209}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2502324990712565088}
-  m_LocalEulerAnglesHint: {x: 2.5, y: 0, z: 0}
+  m_Father: {fileID: 4096652247294120945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8379868540526337352
 Camera:
   m_ObjectHideFlags: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
-  m_StopNaN: 0
+  m_StopNaN: 1
   m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1
@@ -150,10 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7a044df273c7b0fb476912af62d31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseController
-  mouseSensitivity: 10
+  mouseSensitivity: 2.75
   playerBody: {fileID: 2502324990712565088}
-  minLookAngle: -17.5
-  maxLookAngle: 30
+  minLookAngle: -20
+  maxLookAngle: 85
 --- !u!1 &3947707743186751664
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,11 +343,11 @@ PrefabInstance:
     - {fileID: -1772060110441858344, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 2574110852283095412}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6443110787409912021}
+    - targetCorrespondingSourceObject: {fileID: -7067685289770501766, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2574110852283095412}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
       insertIndex: -1
@@ -383,6 +383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 5
   mapUI: {fileID: 0}
+  interactRange: 2.5
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   mapAction: {fileID: 0}
@@ -432,7 +433,12 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.575
   m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}
+  m_Center: {x: 0, y: 0.86, z: 0}
+--- !u!4 &4096652247294120945 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7067685289770501766, guid: 4123e37c41933ea7db0eb47a7ccb8868, type: 3}
+  m_PrefabInstance: {fileID: 2679837694405388939}
+  m_PrefabAsset: {fileID: 0}

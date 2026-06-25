@@ -5,14 +5,19 @@ public class KeyPickup : MonoBehaviour
     public enum KeyType { Chest, Door }
     public KeyType keyType;
 
-    private void OnTriggerEnter(Collider other)
+    public void Pickup()
     {
-        if (other.CompareTag("Player"))
+        if (keyType == KeyType.Chest) 
         {
-            if (keyType == KeyType.Chest) GameManager.instance.hasKeyChest = true;
-            else if (keyType == KeyType.Door) GameManager.instance.hasKeyDoor = true;
-            
-            Destroy(gameObject);
+            GameManager.instance.hasKeyChest = true;
+            GameManager.instance.ShowItemUI("Chest key picked up");
         }
+        else if (keyType == KeyType.Door)
+        {
+            GameManager.instance.hasKeyDoor = true;
+            GameManager.instance.ShowItemUI("Door key picked up");
+        }
+        
+        Destroy(gameObject);
     }
-}   
+}
