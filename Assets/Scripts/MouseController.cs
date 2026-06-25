@@ -15,6 +15,7 @@ public class MouseController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         initialRotation = transform.localRotation;
+        xRotation = 85f;
     }
 
     void LateUpdate()
