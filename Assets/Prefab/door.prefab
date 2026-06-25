@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5267181594661089668}
   - component: {fileID: 4020580395486032552}
   - component: {fileID: 6377562553565892127}
+  - component: {fileID: 305675785699690753}
   m_Layer: 0
   m_Name: door
   m_TagString: Untagged
@@ -127,3 +128,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OpenableBehaviour
   structureType: 1
   contentPrefab: {fileID: 0}
+  spawnYOffset: 1
+--- !u!95 &305675785699690753
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114170836867009901}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 38613e87228d137e495959a00e915dbb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

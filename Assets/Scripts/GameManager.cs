@@ -13,10 +13,8 @@ public class GameManager : MonoBehaviour
     public bool hasKeyChest;
     public bool hasKeyDoor;
 
-    public int deathCount = 0;
-    public event Action<int> OnDeathCountChanged;
-
     private Coroutine timerCoroutine;
+    public float playthroughDuration = 105f;
     private bool isShowingPickup = false;
 
     void Awake()
@@ -45,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LayoutTimerRoutine()
     {
-        yield return new WaitForSeconds(105f);
+        yield return new WaitForSeconds(playthroughDuration);
         ForceDeath();
     }
 
@@ -78,9 +76,6 @@ public class GameManager : MonoBehaviour
 
     public void RegisterDeath()
     {
-        deathCount++;
-        OnDeathCountChanged?.Invoke(deathCount);
-
         if (LayoutManager.instance != null) LayoutManager.instance.ChangeLayoutRandomly();
 
         StartLayoutTimer();

@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
         interactAction.action.Enable();
         mapAction.action.Enable();
         
-        interactAction.action.performed += OnInteract;
-        mapAction.action.performed += OnToggleMap;
+        interactAction.action.started += OnInteract;
+        mapAction.action.started += OnToggleMap;
     }
 
     void OnDisable()
@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour
         interactAction.action.Disable();
         mapAction.action.Disable();
         
-        interactAction.action.performed -= OnInteract;
-        mapAction.action.performed -= OnToggleMap;
+        interactAction.action.started -= OnInteract;
+        mapAction.action.started -= OnToggleMap;
     }
 
     void Update()
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
-            if (col.GetComponent<KeyPickup>() != null || col.GetComponent<OpenableBehaviour>() != null)
+            if (col.GetComponentInParent<KeyPickup>() != null || col.GetComponentInParent<OpenableBehaviour>() != null || col.GetComponentInParent<ScannerPickup>() != null)
             {
                 GameManager.instance.ShowInteractPrompt("Press E to interact");
                 canInteract = true;
@@ -78,9 +78,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
-
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactRange, Physics.AllLayers, QueryTriggerInteraction.Collide);
-        
         foreach (Collider col in colliders)
         {
             KeyPickup key = col.GetComponentInParent<KeyPickup>();
@@ -94,6 +92,13 @@ public class PlayerController : MonoBehaviour
             if (openable != null)
             {
                 openable.TryOpen();
+                return;
+            }
+
+            ScannerPickup scanner = col.GetComponentInParent<ScannerPickup>();
+            if (scanner != null)
+            {
+                scanner.Pickup();
                 return;
             }
         }

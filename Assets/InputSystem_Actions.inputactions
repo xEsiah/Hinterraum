@@ -88,7 +88,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Button",
+                    "name": "Map",
                     "type": "Button",
                     "id": "e3e5e77e-8b0b-4ca1-b0f4-e25cbc4f9c0a",
                     "expectedControlType": "",
@@ -490,7 +490,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Button",
+                    "action": "Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
