@@ -202,17 +202,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1816219049151108215, guid: 41d596ca35d79b17a97d62095d7a5f88, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6135860807422157389}
+      insertIndex: 1
+      addedObject: {fileID: 833441938275599220}
     - targetCorrespondingSourceObject: {fileID: 1816219049151108215, guid: 41d596ca35d79b17a97d62095d7a5f88, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 833441938275599220}
+      addedObject: {fileID: 6135860807422157389}
   m_SourcePrefab: {fileID: 100100000, guid: 41d596ca35d79b17a97d62095d7a5f88, type: 3}
 --- !u!1 &5872201742541231262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1816219049151108215, guid: 41d596ca35d79b17a97d62095d7a5f88, type: 3}
   m_PrefabInstance: {fileID: 5209188972393824489}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &833441938275599220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872201742541231262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f1653c0aeb3c42b3afb5f35062114b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScannerPickup
+  playerScannerGO: {fileID: 0}
 --- !u!65 &6135860807422157389
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -234,19 +247,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45000023, y: 1.2650007, z: 1.2368346}
   m_Center: {x: 6.98027e-24, y: -0.08250018, z: 0.61841714}
---- !u!114 &833441938275599220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872201742541231262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1653c0aeb3c42b3afb5f35062114b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScannerPickup
-  playerScannerGO: {fileID: 0}
 --- !u!4 &6500261014744452644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1332873309783805645, guid: 41d596ca35d79b17a97d62095d7a5f88, type: 3}

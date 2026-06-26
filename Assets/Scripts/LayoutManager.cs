@@ -50,4 +50,27 @@ public class LayoutManager : MonoBehaviour
             }
         }
     }
+
+    public void ResetMapElements()
+    {
+        KeyPickup[] allKeys = FindObjectsByType<KeyPickup>(FindObjectsInactive.Include);
+        foreach (KeyPickup key in allKeys)
+        {
+            if (key.gameObject.scene.IsValid())
+            {
+                key.gameObject.SetActive(true);
+            }
+        }
+
+        foreach (GameObject layout in layouts)
+        {
+            if (layout == null) continue;
+
+            OpenableBehaviour[] openables = layout.GetComponentsInChildren<OpenableBehaviour>(true);
+            foreach (OpenableBehaviour openable in openables)
+            {
+                openable.ResetState();
+            }
+        }
+    }
 }

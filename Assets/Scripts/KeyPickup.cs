@@ -10,14 +10,14 @@ public class KeyPickup : MonoBehaviour
         if (keyType == KeyType.Chest) 
         {
             GameManager.instance.hasKeyChest = true;
-            GameManager.instance.ShowItemUI("Chest key picked up");
+            GameManager.instance.ShowItemUI("Chest key picked up !");
         }
         else if (keyType == KeyType.Door)
         {
             GameManager.instance.hasKeyDoor = true;
-            GameManager.instance.ShowItemUI("Door key picked up");
+            GameManager.instance.ShowItemUI("Door key picked up !");
         }
         
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

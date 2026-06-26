@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnToggleMap(InputAction.CallbackContext context)
     {
+        if (GameManager.instance != null && GameManager.instance.isHardMode && !GameManager.instance.hasScanner) return;
         if (mapUI != null) mapUI.SetActive(!mapUI.activeSelf);
     }
 
@@ -123,5 +124,10 @@ public class PlayerController : MonoBehaviour
     {
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+    }
+
+    public void CloseMap()
+    {
+        if (mapUI != null) mapUI.SetActive(false);
     }
 }

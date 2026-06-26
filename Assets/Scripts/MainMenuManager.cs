@@ -18,17 +18,25 @@ public class MainMenuManager : MonoBehaviour
     public AudioSource bgmSource;
     public float fadeDuration = 2f;
 
-    private string targetScene;
+    private string targetScene = "Backrooms";
     private bool isStarting = false;
 
-    public void LoadEasyLevel() => StartCinematic("Level-Easy");
-    public void LoadHardcoreLevel() => StartCinematic("Level-Hardcore");
+    public void LoadEasyLevel()
+    {
+        GameSettings.isHardMode = false;
+        StartCinematic();
+    }
 
-    private void StartCinematic(string sceneName)
+    public void LoadHardcoreLevel()
+    {
+        GameSettings.isHardMode = true;
+        StartCinematic();
+    }
+
+    private void StartCinematic()
     {
         if (isStarting) return;
         isStarting = true;
-        targetScene = sceneName;
 
         if (menuCamera != null) menuCamera.gameObject.SetActive(false);
         if (cinematicCamera != null) cinematicCamera.gameObject.SetActive(true);
@@ -58,15 +66,25 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator CinematicRoutine()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         if (playerCollider != null) playerCollider.enabled = false;
         if (playerAnimator != null) playerAnimator.SetTrigger("Fall");
-        if (cinematicCamera != null) cinematicCamera.gameObject.SetActive(false);
         if (cinematicCameraTop != null) cinematicCameraTop.gameObject.SetActive(true);
+        if (cinematicCamera != null) cinematicCamera.gameObject.SetActive(false);
     }
 
     public void LoadTargetScene()
     {
         if (!string.IsNullOrEmpty(targetScene)) SceneManager.LoadScene(targetScene);
+    }
+
+    public void LoadMenuScene()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

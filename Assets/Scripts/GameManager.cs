@@ -7,16 +7,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public bool isHardMode;
+
     public GameObject playerReference;
+    public GameObject scannerPlayerReference;
     public TextMeshProUGUI itemTextUI;
     
     public bool hasKeyChest;
     public bool hasKeyDoor;
+    public bool hasScanner;
 
     private Coroutine timerCoroutine;
-    public float playthroughDuration = 105f;
+    public float playthroughDuration = 90f;
     private bool isShowingPickup = false;
     public float fallDuration = 5f;
+    
+    public AudioClip getUpSound;
+    private AudioSource sfxSource;
 
     void Awake()
     {
@@ -29,11 +36,16 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        isHardMode = GameSettings.isHardMode;
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.spatialBlend = 0f;
     }
 
     void Start()
     {
         StartLayoutTimer();
+        sfxSource.PlayOneShot(getUpSound);
     }
 
     public void StartLayoutTimer()
@@ -55,15 +67,22 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DeathSequenceRoutine()
     {
+        scannerPlayerReference.SetActive(false);
         Collider playerCollider = playerReference.GetComponent<Collider>();
         Rigidbody playerRb = playerReference.GetComponent<Rigidbody>();
         Animator playerAnimator = playerReference.GetComponent<Animator>();
-        PlayerController playerController = playerReference.GetComponent<PlayerController>();
+        PlayerController pc = playerReference.GetComponent<PlayerController>();
 
-        if (playerController != null) playerController.enabled = false;
+        if (pc != null) {
+            pc.CloseMap();
+            pc.enabled = false;
+        }
+
         if (playerAnimator != null) playerAnimator.SetBool("NoClip", true);
 
         yield return new WaitForSeconds(fallDuration);
+
+        if (AtmosphereManager.instance != null) AtmosphereManager.instance.ResetAtmosphere();
 
         playerReference.transform.position = new Vector3(2f, 0.1f, 0f);
         
@@ -80,16 +99,33 @@ public class GameManager : MonoBehaviour
             playerAnimator.SetTrigger("GetUp");
         }
 
+        if (getUpSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(getUpSound);
+        }
+
         yield return new WaitForSeconds(2.5f);
 
-        if (playerController != null) playerController.enabled = true;
+        if (hasScanner)
+        {
+            scannerPlayerReference.SetActive(true);
+        }
+        if (pc != null) pc.enabled = true;
 
         RegisterDeath();
     }
 
     public void RegisterDeath()
     {
-        if (LayoutManager.instance != null) LayoutManager.instance.ChangeLayoutRandomly();
+        ResetInventory();
+
+        if (AtmosphereManager.instance != null) AtmosphereManager.instance.ResetAtmosphere();
+        
+        if (LayoutManager.instance != null) 
+        {
+            LayoutManager.instance.ResetMapElements();
+            LayoutManager.instance.ChangeLayoutRandomly();
+        }
 
         StartLayoutTimer();
     }
@@ -126,5 +162,11 @@ public class GameManager : MonoBehaviour
         {
             itemTextUI.text = "";
         }
+    }
+
+    public void ResetInventory()
+    {
+        hasKeyChest = false;
+        hasKeyDoor = false;
     }
 }
