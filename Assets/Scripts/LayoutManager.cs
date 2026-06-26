@@ -53,7 +53,7 @@ public class LayoutManager : MonoBehaviour
 
     public void ResetMapElements()
     {
-        KeyPickup[] allKeys = FindObjectsByType<KeyPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        KeyPickup[] allKeys = FindObjectsByType<KeyPickup>(FindObjectsInactive.Include);
         foreach (KeyPickup key in allKeys)
         {
             if (key.gameObject.scene.IsValid())
@@ -62,7 +62,7 @@ public class LayoutManager : MonoBehaviour
             }
         }
 
-        OpenableBehaviour[] allOpenables = FindObjectsByType<OpenableBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        OpenableBehaviour[] allOpenables = FindObjectsByType<OpenableBehaviour>(FindObjectsInactive.Include);
         foreach (OpenableBehaviour openable in allOpenables)
         {
             if (openable.gameObject.scene.IsValid())

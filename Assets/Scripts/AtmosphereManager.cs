@@ -9,14 +9,27 @@ public class AtmosphereManager : MonoBehaviour
 
     public Volume globalVolume;
     public Light directionalLight;
-    public AudioClip tensionSound;
     
-    public AudioClip randomSound1;
-    public AudioClip randomSound2;
+    public AudioClip backroomAmbientSound;
+    public AudioClip breathingSound;
+    public AudioClip heartbeatSound;
     
     public float delayBeforeStress = 30f;
-    public float randomSoundStartRemaining = 80f;
-    public float randomSoundEndRemaining = 5f;
+
+    public float vignetteStart = 0.2f;
+    public float vignetteEnd = 0.6f;
+    
+    public float dofStart = 5f;
+    public float dofEnd = 1.5f;
+    
+    public float exposureStart = 0f;
+    public float exposureEnd = -1.5f;
+    
+    public float lightStart = 1f;
+    public float lightEnd = 0.2f;
+
+    public float heartbeatSlowInterval = 1.5f;
+    public float heartbeatFastInterval = 0.4f;
 
     private AudioSource audioSource;
     private Vignette vignette;
@@ -26,8 +39,8 @@ public class AtmosphereManager : MonoBehaviour
     private float maxTime;
     private float currentTime;
     
-    private float randomTimer;
-    private bool playFirstRandom = true;
+    private float breathingTimer;
+    private float heartbeatTimer;
 
     void Awake()
     {
@@ -38,7 +51,7 @@ public class AtmosphereManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = tensionSound;
+        audioSource.clip = backroomAmbientSound;
         audioSource.loop = true;
         audioSource.Play();
 
@@ -67,20 +80,23 @@ public class AtmosphereManager : MonoBehaviour
             tensionFactor = Mathf.Pow(currentStressTime / stressDuration, 3f);
         }
 
-        UpdateAudio(tensionFactor);
         UpdateVisuals(tensionFactor);
         UpdateLighting(tensionFactor);
 
-        if (currentTime <= randomSoundStartRemaining && currentTime >= randomSoundEndRemaining)
+        breathingTimer -= Time.deltaTime;
+        if (breathingTimer <= 0f)
         {
-            randomTimer -= Time.deltaTime;
-            if (randomTimer <= 0f)
+            if (breathingSound != null) audioSource.PlayOneShot(breathingSound);
+            breathingTimer = Random.Range(4f, 8f);
+        }
+
+        if (tensionFactor > 0f)
+        {
+            heartbeatTimer -= Time.deltaTime;
+            if (heartbeatTimer <= 0f)
             {
-                audioSource.PlayOneShot(playFirstRandom ? randomSound1 : randomSound2);
-                playFirstRandom = !playFirstRandom;
-                
-                float progress = 1f - ((currentTime - randomSoundEndRemaining) / (randomSoundStartRemaining - randomSoundEndRemaining));
-                randomTimer = Mathf.Lerp(4f, 0.5f, progress);
+                if (heartbeatSound != null) audioSource.PlayOneShot(heartbeatSound);
+                heartbeatTimer = Mathf.Lerp(heartbeatSlowInterval, heartbeatFastInterval, tensionFactor);
             }
         }
     }
@@ -89,30 +105,32 @@ public class AtmosphereManager : MonoBehaviour
     {
         maxTime = GameManager.instance.playthroughDuration;
         currentTime = maxTime;
-        randomTimer = 2f;
-        UpdateAudio(0f);
+        
+        breathingTimer = Random.Range(2f, 5f);
+        heartbeatTimer = heartbeatSlowInterval;
+        
         UpdateVisuals(0f);
         UpdateLighting(0f);
-    }
-
-    private void UpdateAudio(float factor)
-    {
-        audioSource.pitch = Mathf.Lerp(0.8f, 2.0f, factor);
-        audioSource.volume = Mathf.Lerp(0f, 1.0f, factor); 
+        
+        if (audioSource != null)
+        {
+            audioSource.pitch = 1f;
+            audioSource.volume = 1f;
+        }
     }
 
     private void UpdateVisuals(float factor)
     {
-        if (vignette != null) vignette.intensity.value = Mathf.Lerp(0.2f, 0.6f, factor);
-        if (depthOfField != null) depthOfField.focusDistance.value = Mathf.Lerp(5f, 1.5f, factor);
-        if (colorAdjustments != null) colorAdjustments.postExposure.value = Mathf.Lerp(0f, -1.5f, factor);
+        if (vignette != null) vignette.intensity.value = Mathf.Lerp(vignetteStart, vignetteEnd, factor);
+        if (depthOfField != null) depthOfField.focusDistance.value = Mathf.Lerp(dofStart, dofEnd, factor);
+        if (colorAdjustments != null) colorAdjustments.postExposure.value = Mathf.Lerp(exposureStart, exposureEnd, factor);
     }
 
     private void UpdateLighting(float factor)
     {
         if (directionalLight != null)
         {
-            directionalLight.intensity = Mathf.Lerp(1f, 0.2f, factor);
+            directionalLight.intensity = Mathf.Lerp(lightStart, lightEnd, factor);
         }
     }
 }

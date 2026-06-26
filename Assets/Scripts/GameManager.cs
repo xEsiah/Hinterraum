@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
         if (AtmosphereManager.instance != null) AtmosphereManager.instance.ResetAtmosphere();
 
-        playerReference.transform.position = new Vector3(2f, 0.1f, 0f);
+        playerReference.transform.position = new Vector3(14.4f, 0.1f, -22.5f);
         
         if (playerRb != null)
         {
