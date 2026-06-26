@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2082016431327621708}
   m_Layer: 0
   m_Name: Gold dot
-  m_TagString: Untagged
+  m_TagString: mapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,6 +141,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fe5bf4624ba821cf6996ee6e0c6c19d9, type: 3}
       propertyPath: m_Name
       value: keyDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fe5bf4624ba821cf6996ee6e0c6c19d9, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -54,6 +54,15 @@ public class GameManager : MonoBehaviour
         timerCoroutine = StartCoroutine(LayoutTimerRoutine());
     }
 
+    public void StopLayoutTimer()
+    {
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+            timerCoroutine = null;
+        }
+    }
+
     private IEnumerator LayoutTimerRoutine()
     {
         yield return new WaitForSeconds(playthroughDuration);
@@ -68,6 +77,13 @@ public class GameManager : MonoBehaviour
     private IEnumerator DeathSequenceRoutine()
     {
         scannerPlayerReference.SetActive(false);
+
+        MouseController mouseController = playerReference.GetComponentInChildren<MouseController>();
+        if (mouseController != null)
+        {
+            mouseController.ForceDeathAngle();
+        }
+
         Collider playerCollider = playerReference.GetComponent<Collider>();
         Rigidbody playerRb = playerReference.GetComponent<Rigidbody>();
         Animator playerAnimator = playerReference.GetComponent<Animator>();
@@ -125,6 +141,11 @@ public class GameManager : MonoBehaviour
         {
             LayoutManager.instance.ResetMapElements();
             LayoutManager.instance.ChangeLayoutRandomly();
+        }
+
+        if (DifficultyManager.instance != null)
+        {
+            DifficultyManager.instance.hideMapPoints();
         }
 
         StartLayoutTimer();

@@ -9,10 +9,10 @@ public class OpenableBehaviour : MonoBehaviour
     public StructureType structureType;
     public GameObject contentPrefab;
     public float spawnYOffset = 1.0f;
+    public GameObject originalPrefab;
 
     private bool isOpened = false;
     private Animator animator;
-    private GameObject spawnedContent;
 
     void Awake()
     {
@@ -49,12 +49,9 @@ public class OpenableBehaviour : MonoBehaviour
                 GameManager.instance.hasKeyDoor = false;
                 GameManager.instance.ShowItemUI("Door unlocked !"); 
                 
+                GameManager.instance.StopLayoutTimer();
                 OpenStructure();
-
-                if (contentPrefab != null)
-                {
-                    StartCoroutine(LoadCreditsRoutine());
-                }
+                StartCoroutine(LoadCreditsRoutine());
             }
             else
             {
@@ -69,33 +66,37 @@ public class OpenableBehaviour : MonoBehaviour
         animator.SetTrigger("Opening");
     }
 
-    private IEnumerator SpawnContentRoutine()
-    {
-        yield return new WaitForSeconds(1.5f);
-        
-        Vector3 spawnPosition = transform.position + new Vector3(0f, spawnYOffset, 0f);
-        spawnedContent = Instantiate(contentPrefab, spawnPosition, transform.rotation);
-    }
-
     private IEnumerator LoadCreditsRoutine()
     {
         yield return new WaitForSeconds(1.0f);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene("Credits");
+    }
+
+    private IEnumerator SpawnContentRoutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Vector3 spawnPosition = transform.position + new Vector3(0f, spawnYOffset, 0f);
+        
+        GameObject spawnedContent = Instantiate(contentPrefab, spawnPosition, transform.rotation);
+        spawnedContent.transform.SetParent(transform);
+        spawnedContent.SetActive(true);
     }
 
     public void ResetState()
     {
-        isOpened = false;
+        if (structureType == StructureType.Door) return;
 
-        if (spawnedContent != null)
+        if (originalPrefab != null)
         {
-            Destroy(spawnedContent);
-        }
-        
-        if (animator != null)
-        {
-            animator.Rebind();
-            animator.Update(0f);
+            GameObject clone = Instantiate(originalPrefab, transform.parent);
+            clone.transform.localPosition = transform.localPosition;
+            clone.transform.localRotation = transform.localRotation;
+            clone.transform.localScale = transform.localScale;
+            clone.name = gameObject.name;
+            
+            Destroy(gameObject);
         }
     }
 }

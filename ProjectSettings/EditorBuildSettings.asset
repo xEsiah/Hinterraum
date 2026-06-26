@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Backrooms.unity
     guid: b583a0698c53d4a06a2b737e713c6a4c
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 59b5015d24735702db5ef548215bb918
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

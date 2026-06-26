@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5864840070626816901}
   m_Layer: 0
   m_Name: Gold dot
-  m_TagString: Untagged
+  m_TagString: mapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -207,6 +207,7 @@ MonoBehaviour:
   structureType: 0
   contentPrefab: {fileID: 3048178610090229197, guid: 15618c577af026e9cb0218d20a63f2b3, type: 3}
   spawnYOffset: 1
+  originalPrefab: {fileID: 1578653834794953244}
 --- !u!95 &5811873733943874555
 Animator:
   serializedVersion: 7

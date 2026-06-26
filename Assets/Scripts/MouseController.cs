@@ -32,4 +32,10 @@ public class MouseController : MonoBehaviour
         transform.localRotation = initialRotation * Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
     }
+
+    public void ForceDeathAngle()
+    {
+        xRotation = 85f;
+        transform.localRotation = initialRotation * Quaternion.Euler(xRotation, 0f, 0f);
+    }
 }

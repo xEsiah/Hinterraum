@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 5960264686198572062}
   m_Layer: 0
   m_Name: Gold dot
-  m_TagString: Untagged
+  m_TagString: mapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -344,6 +344,7 @@ MonoBehaviour:
   structureType: 1
   contentPrefab: {fileID: 0}
   spawnYOffset: 1
+  originalPrefab: {fileID: 0}
 --- !u!65 &7102653075598110281
 BoxCollider:
   m_ObjectHideFlags: 0
